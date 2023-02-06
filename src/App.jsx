@@ -1,37 +1,13 @@
+import InputText from "./components/form/input-text";
+import InputPassword from "./components/form/input-password";
+
 function App() {
   return (
     <form className="mt-4 flex flex-col items-center gap-y-2">
-      <label htmlFor="username" className="sr-only">
-        Username
-      </label>
-      <input
-        type="text"
-        id="username"
-        name="username"
-        placeholder="Username"
-        className="rounded"
-      />
+      <InputText />
 
-      <label htmlFor="password" className="sr-only">
-        Password
-      </label>
-      <input
-        type="password"
-        id="password"
-        name="password"
-        placeholder="Password"
-        className="rounded"
-      />
-
-      <label htmlFor="confirmPassword" className="sr-only">
-        Confirm Password
-      </label>
-      <input
-        type="password"
-        id="confirmPassword"
-        placeholder="Confirm Password"
-        className="rounded"
-      />
+      <InputPassword />
+      <InputPassword />
 
       {/* TODO: Toggle between Register and Login */}
       <button
