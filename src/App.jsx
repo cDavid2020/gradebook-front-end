@@ -1,10 +1,12 @@
 import { useState } from "react";
 import Button from "./components/button";
+import Error from "./components/error";
 import InputText from "./components/form/input-text";
 import apiService from "./services/api";
 
 function App() {
   const [isRegistering, setIsRegistering] = useState(true);
+  const [error, setError] = useState(null);
 
   return (
     <main className="flex flex-col gap-y-4">
@@ -31,8 +33,9 @@ function App() {
                 // TODO: Route the user to...
                 console.log(response);
               })
-              .error((error) => {
-                console.error(error.message);
+              .catch((error) => {
+                // TODO: use the error message from the server (not the HTTP generic message)
+                setError(error.message);
               });
           } else {
             // TODO: Use an Error component to display this error.
@@ -52,6 +55,9 @@ function App() {
         )}
 
         <Button type="submit" text={isRegistering ? "Sign Up" : "Login"} />
+
+        {/* Conditional rendering: IF error is updated to something truthy (not null)... */}
+        {error && <Error message={error.message} />}
       </form>
 
       <button
