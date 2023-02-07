@@ -7,7 +7,22 @@ function App() {
 
   return (
     <main className="flex flex-col gap-y-4">
-      <form className="mt-4 flex flex-col items-center gap-y-2">
+      <form
+        className="mt-4 flex flex-col items-center gap-y-2"
+        onSubmit={(e) => {
+          e.preventDefault();
+
+          // TODO: Validate that the passwords match if we're registering.
+
+          const newUser = {
+            // 'target' is the form element that the event was triggered on.
+            username: e.target.username.value,
+            password: e.target.password.value,
+          };
+
+          console.log(newUser);
+        }}
+      >
         <InputText label="Username" id="username" />
         <InputText label="Password" id="password" type="password" />
 
@@ -19,7 +34,7 @@ function App() {
           />
         )}
 
-        <Button text={isRegistering ? "Sign Up" : "Login"} />
+        <Button type="submit" text={isRegistering ? "Sign Up" : "Login"} />
       </form>
 
       <button
