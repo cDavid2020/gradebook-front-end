@@ -33,9 +33,19 @@ function App() {
                 // TODO: Route the user to...
                 console.log(response);
               })
-              .catch((error) => {
-                // TODO: use the error message from the server (not the HTTP generic message)
-                setError(error.message);
+              .catch(async (error) => {
+                if (error.response) {
+                  // The server sends the message in the response body as JSON.
+                  const errorMessage = await error.response.json();
+
+                  // Use the dispatch function to update the state.
+                  // This will trigger a re-render of the component.
+                  // Since there is now an error, the error component will be CONDITIONALLY RENDERED 👇🏾
+                  setError(errorMessage);
+                } else {
+                  // If there was no server response, then the error is likely a network error.
+                  setError({ message: error.message });
+                }
               });
           } else {
             // TODO: Use an Error component to display this error.
