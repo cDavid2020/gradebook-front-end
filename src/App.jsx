@@ -22,46 +22,25 @@ function App() {
 
           // TODO: Consider 'useRef' for the form elements.
           if (isRegistering) {
-            if (!e.target.password.value === e.target.confirmPassword.value) {
+            if (e.target.password.value !== e.target.confirmPassword.value) {
               setError({ message: "Passwords do not match." });
               return;
             }
-
-            apiService
-              .register(submittedUser)
-              .then((response) => {
-                // TODO: Route the user to...
-                console.log(response);
-              })
-              .catch(async (error) => {
-                if (error.response) {
-                  // The server sends the message in the response body as JSON.
-                  const errorMessage = await error.response.json();
-
-                  // Use the dispatch function to update the state.
-                  // This will trigger a re-render of the component.
-                  // Since there is now an error, the error component will be CONDITIONALLY RENDERED 👇🏾
-                  setError(errorMessage);
-                } else {
-                  // If there was no server response, then the error is likely a network error.
-                  setError({ message: error.message });
-                }
-              });
-          } else {
-            apiService
-              .login(submittedUser)
-              .then((response) => {
-                console.log(response);
-              })
-              .catch(async (error) => {
-                if (error.response) {
-                  const errorMessage = await error.response.json();
-                  setError(errorMessage);
-                } else {
-                  setError({ message: error.message });
-                }
-              });
           }
+
+          apiService
+            .loginOrRegister(submittedUser, isRegistering)
+            .then((response) => {
+              console.log(response);
+            })
+            .catch(async (error) => {
+              if (error.response) {
+                const errorMessage = await error.response.json();
+                setError(errorMessage);
+              } else {
+                setError({ message: error.message });
+              }
+            });
         }}
         onFocus={() => {
           setError(null);
