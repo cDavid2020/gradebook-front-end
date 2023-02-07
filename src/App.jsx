@@ -31,7 +31,10 @@ function App() {
           apiService
             .loginOrRegister(submittedUser, isRegistering)
             .then((response) => {
-              console.log(response);
+              // TODO: Avoid using localStorage for tokens!
+              if (response.token) {
+                localStorage.setItem("token", response.token);
+              }
             })
             .catch(async (error) => {
               if (error.response) {
