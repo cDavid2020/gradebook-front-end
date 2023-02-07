@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Button from "./components/button";
 import InputText from "./components/form/input-text";
+import apiService from "./services/api";
 
 function App() {
   const [isRegistering, setIsRegistering] = useState(true);
@@ -13,14 +14,30 @@ function App() {
           e.preventDefault();
 
           // TODO: Validate that the passwords match if we're registering.
+          // TODO: Consider 'useRef' for the form elements.
+          if (
+            isRegistering &&
+            e.target.password.value === e.target.confirmPassword.value
+          ) {
+            const newUser = {
+              // 'target' is the form element that the event was triggered on.
+              username: e.target.username.value,
+              password: e.target.password.value,
+            };
 
-          const newUser = {
-            // 'target' is the form element that the event was triggered on.
-            username: e.target.username.value,
-            password: e.target.password.value,
-          };
-
-          console.log(newUser);
+            apiService
+              .register(newUser)
+              .then((response) => {
+                // TODO: Route the user to...
+                console.log(response);
+              })
+              .error((error) => {
+                console.error(error.message);
+              });
+          } else {
+            // TODO: Use an Error component to display this error.
+            console.error("Passwords do not match");
+          }
         }}
       >
         <InputText label="Username" id="username" />
