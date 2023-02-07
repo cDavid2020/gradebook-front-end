@@ -1,25 +1,36 @@
+import { useState } from "react";
+import Button from "./components/button";
 import InputText from "./components/form/input-text";
 
 function App() {
+  const [isRegistering, setIsRegistering] = useState(true);
+
   return (
-    <form className="mt-4 flex flex-col items-center gap-y-2">
-      <InputText label="Username" id="username" />
+    <main className="flex flex-col gap-y-4">
+      <form className="mt-4 flex flex-col items-center gap-y-2">
+        <InputText label="Username" id="username" />
+        <InputText label="Password" id="password" type="password" />
 
-      <InputText label="Password" id="password" type="password" />
-      <InputText
-        label="Confirm Password"
-        id="confirmPassword"
-        type="password"
-      />
+        {isRegistering && (
+          <InputText
+            label="Confirm Password"
+            id="confirmPassword"
+            type="password"
+          />
+        )}
 
-      {/* TODO: Toggle between Register and Login */}
+        <Button text={isRegistering ? "Sign Up" : "Login"} />
+      </form>
+
       <button
-        type="submit"
-        className="rounded bg-green-500 px-4 py-2 text-white hover:bg-green-600"
+        className="text-center text-blue-500"
+        onClick={() => {
+          setIsRegistering((prev) => !prev);
+        }}
       >
-        Register
+        {isRegistering ? "Already have an account?" : "Don't have an account?"}
       </button>
-    </form>
+    </main>
   );
 }
 
