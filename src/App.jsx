@@ -15,20 +15,20 @@ function App() {
         onSubmit={(e) => {
           e.preventDefault();
 
-          // TODO: Validate that the passwords match if we're registering.
+          const submittedUser = {
+            username: e.target.username.value,
+            password: e.target.password.value,
+          };
+
           // TODO: Consider 'useRef' for the form elements.
-          if (
-            isRegistering &&
-            e.target.password.value === e.target.confirmPassword.value
-          ) {
-            const newUser = {
-              // 'target' is the form element that the event was triggered on.
-              username: e.target.username.value,
-              password: e.target.password.value,
-            };
+          if (isRegistering) {
+            if (!e.target.password.value === e.target.confirmPassword.value) {
+              setError({ message: "Passwords do not match." });
+              return;
+            }
 
             apiService
-              .register(newUser)
+              .register(submittedUser)
               .then((response) => {
                 // TODO: Route the user to...
                 console.log(response);
@@ -48,7 +48,19 @@ function App() {
                 }
               });
           } else {
-            setError({ message: "Passwords do not match." });
+            apiService
+              .login(submittedUser)
+              .then((response) => {
+                console.log(response);
+              })
+              .catch(async (error) => {
+                if (error.response) {
+                  const errorMessage = await error.response.json();
+                  setError(errorMessage);
+                } else {
+                  setError({ message: error.message });
+                }
+              });
           }
         }}
         onFocus={() => {
