@@ -48,9 +48,11 @@ function App() {
                 }
               });
           } else {
-            // TODO: Use an Error component to display this error.
-            console.error("Passwords do not match");
+            setError({ message: "Passwords do not match." });
           }
+        }}
+        onFocus={() => {
+          setError(null);
         }}
       >
         <InputText label="Username" id="username" />
