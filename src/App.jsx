@@ -8,6 +8,16 @@ function App() {
   const [isRegistering, setIsRegistering] = useState(true);
   const [error, setError] = useState(null);
 
+  const handleError = (error) => {
+    if (error.response) {
+      error.response.json().then((json) => {
+        setError(json);
+      });
+    } else {
+      setError({ message: error.message });
+    }
+  };
+
   return (
     <main className="flex flex-col gap-y-4">
       <form
@@ -20,7 +30,6 @@ function App() {
             password: e.target.password.value,
           };
 
-          // TODO: Consider 'useRef' for the form elements.
           if (isRegistering) {
             if (e.target.password.value !== e.target.confirmPassword.value) {
               setError({ message: "Passwords do not match." });
@@ -36,13 +45,8 @@ function App() {
                 localStorage.setItem("token", response.token);
               }
             })
-            .catch(async (error) => {
-              if (error.response) {
-                const errorMessage = await error.response.json();
-                setError(errorMessage);
-              } else {
-                setError({ message: error.message });
-              }
+            .catch((error) => {
+              handleError(error);
             });
         }}
         onFocus={() => {
